@@ -1,25 +1,11 @@
-<project>
- <!-- Your project information here -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
- <build>
-    <plugins>
-      <!-- Other plugins -->
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>jib-maven-plugin</artifactId>
-        <version>3.2.1</version>
-        <configuration>
-          <from>
-            <image>openjdk:17-alpine</image>
-          </from>
-          <container>
-            <ports>
-              <port>8080</port>
-            </ports>
-            <format>OCI</format>
-          </container>
-        </configuration>
-      </plugin>
-    </plugins>
- </build>
+    <groupId>com.example</groupId>
+    <artifactId>my-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Add your dependencies, plugins, etc. here -->
 </project>
