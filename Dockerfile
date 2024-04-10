@@ -1,23 +1,21 @@
-# Используйте Maven для сборки зависимостей
+# Use the official Maven image as the base image
 FROM maven:3.8.1-openjdk-11-slim AS build
 
-# Копируйте только pom.xml для сборки зависимостей
-COPY ./pom.xml ./pom.xml
-
-# Скачиваем все зависимости для оффлайн-использования
-RUN mvn dependency:go-offline -B
-
-# Выполняем сборку проекта
-RUN mvn package
-
-# Используйте базовый образ OpenJDK для запуска приложения
-FROM openjdk:11-jre-slim
-
-# Устанавливаем рабочую директорию
+# Set the working directory
 WORKDIR /app
 
-# Копируем собранный jar файл из предыдущего этапа
-COPY --from=build /app/target/my-app-1.0.jar /app/my-app.jar
+# Copy the pom.xml file and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Запускаем приложение
-CMD ["java", "-jar", "/app/my-app.jar"]
+# Copy the rest of the project files
+COPY src ./src
+
+# Build the project
+RUN mvn package
+
+# Use the Tomcat image to serve the web application
+FROM tomcat:9.0-jdk11-openjdk-slim
+
+# Copy the built web application from the build stage
+COPY --from=build /app/target/maven-hello-world-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
