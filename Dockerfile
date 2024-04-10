@@ -1,11 +1,11 @@
-FROM maven:3.6.0-jdk-8
-
+# Use Maven to build the application
+FROM maven:3.8.6-openjdk-18-slim AS build
 WORKDIR /app
-
 COPY pom.xml .
-RUN mvn dependency:resolve
+RUN mvn dependency:go-offline
 
-
-RUN mvn clean package
-
-CMD ["java", "-jar", "target/your-app.jar"]
+# Run the application
+FROM openjdk:18-slim
+WORKDIR /app
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app/app.jar"]
